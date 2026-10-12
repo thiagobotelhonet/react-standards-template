@@ -21,7 +21,7 @@ import {
 import { itemsFiltersSchema } from "../types/items.schemas"
 
 const server = setupServer(...handlers)
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }))
+beforeAll(() => server.listen({ onUnhandledFrame: "error" }))
 beforeEach(() => {
   resetMockState()
   setCsrfToken(null)

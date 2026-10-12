@@ -13,6 +13,14 @@ minimumReleaseAge: 1440
 # pnpm mais novo que o Dependabot usa.
 minimumReleaseAgeStrict: false
 
+# O @vitest/mocker 5.0.3 declara o msw 2 como dependência opcional e só o usa
+# no modo navegador do Vitest; aqui os testes rodam em jsdom e chamam o msw
+# direto. O 5.0.4 já aceita o msw 3. Remova este bloco quando o Vitest chegar
+# à 5.0.4.
+peerDependencyRules:
+  allowedVersions:
+    "@vitest/mocker>msw": "3"
+
 allowBuilds:
   esbuild: true
   lightningcss: true

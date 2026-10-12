@@ -15,8 +15,8 @@ async function start() {
   document.title = appConfig.name
   document.documentElement.lang = appConfig.locale
   if (import.meta.env.DEV && import.meta.env.MODE === "mock") {
-    const { worker, onUnhandledRequest } = await import("./mocks/browser")
-    await worker.start({ onUnhandledRequest, quiet: true })
+    const { worker, onUnhandledFrame } = await import("./mocks/browser")
+    await worker.start({ onUnhandledFrame, quiet: true })
   }
   const root = document.getElementById("root")
   if (!root) throw new Error("Root element is missing")
