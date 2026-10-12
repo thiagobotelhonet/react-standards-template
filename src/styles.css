@@ -10,13 +10,7 @@
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: "Geist Variable", sans-serif;
-  --transition-property-width: width;
-  --container-content: 80rem; /* 1280px, same as the default Tailwind xl breakpoint */
   --color-canvas: var(--canvas);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-brand-outline: var(--brand-outline);
-  --color-brand-outline-foreground: var(--brand-outline-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
@@ -80,10 +74,6 @@
   --border: oklch(0.905 0.014 260.1);
   --input: oklch(0.905 0.014 260.1);
   --ring: oklch(0.182 0.034 260.121);
-  --brand: oklch(0.57 0.105 180);
-  --brand-foreground: oklch(0.99 0 0);
-  --brand-outline: oklch(0.64 0.14 121.5);
-  --brand-outline-foreground: oklch(0.535 0.125 121.5);
   --success: oklch(0.515 0.09 184);
   --warning: oklch(0.535 0.125 60);
   --info: oklch(0.488 0.243 264.376);
@@ -123,10 +113,6 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.93 0.02 260.1);
-  --brand: oklch(0.57 0.105 180);
-  --brand-foreground: oklch(0.99 0 0);
-  --brand-outline: oklch(0.57 0.105 180);
-  --brand-outline-foreground: oklch(0.57 0.105 180);
   --success: oklch(0.77 0.135 184);
   --warning: oklch(0.77 0.165 60);
   --info: oklch(0.72 0.14 260);

@@ -210,11 +210,6 @@ scanLines(
   code.filter((f) => f.path !== "src/shared/components/app-table.tsx"),
   /\buse(React)?Table\s*\(|createTableHook\s*\(/
 )
-scanLines(
-  "CMP-09",
-  code.filter((f) => f.path !== "src/routes/__root.tsx"),
-  /<Toaster\b/
-)
 
 const styles = live.find((f) => f.path === "src/styles.css")
 if (styles) {

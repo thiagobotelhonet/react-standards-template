@@ -1,0 +1,9 @@
+language js
+
+or {
+  JsModuleSource() as $source,
+  `import($source)`
+} where {
+  $source <: r"[\"'`](?:@/|(?:\.\./)+)features(?:/.*)?[\"'`]",
+  register_diagnostic(span=$source, message="CMP-04 — src/shared nunca importa de src/features: receba dados e ações da rota por propriedade.")
+}

@@ -1,4 +1,5 @@
 export { sessionQueryOptions } from "./api/auth.queries"
+export { fetchSession, login, logout } from "./api/auth.services"
 export { LoginForm } from "./components/login-form"
 export { LogoutButton } from "./components/logout-button"
 export type { User } from "./types/auth.schemas"

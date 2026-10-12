@@ -15,6 +15,10 @@ on:
       - "pnpm-workspace.yaml"
       - "index.html"
       - "src/config/app.ts"
+      # O `pnpm check` do projeto gerado roda com estas regras; plugin que só
+      # funciona com o caminho do template quebra lá, e só lá.
+      - "biome.json"
+      - "biome-plugins/**"
       - ".node-version"
       - ".github/actions/install-node-dependencies/action.yml"
       - ".github/workflows/generator-roundtrip.yml"

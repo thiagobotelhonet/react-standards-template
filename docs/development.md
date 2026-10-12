@@ -42,3 +42,12 @@ O lockfile é versionado. Atualize famílias relacionadas juntas, consulte os gu
 ## Evoluir o template
 
 Uma cópia não acompanha automaticamente a origem. Corrija o template, descreva a mudança no changelog e leve o patch às aplicações afetadas. Uma biblioteca compartilhada só se justifica quando o custo de propagar correções superar o custo de versionar e distribuir essa biblioteca.
+
+Cada cópia guarda em `.template-origin.json` o commit do template de que nasceu (decisão 0010). Para trazer a ela as regras que mudaram desde então, rode na pasta do template, trocando `<commit>` pelo valor do arquivo:
+
+```bash
+git log --oneline <commit>..HEAD -- CLAUDE.md docs .claude biome.json biome-plugins
+git diff <commit> HEAD -- CLAUDE.md docs .claude biome.json biome-plugins > regras.patch
+```
+
+Na cópia, aplique com `git apply --3way regras.patch`, resolva o que conflitar com mudanças locais, rode `pnpm verify` e corrija o que as regras novas apontarem. Depois, atualize o `commit` de `.template-origin.json` para o do template. O mesmo vale para código: troque a lista de caminhos pelos arquivos da correção.

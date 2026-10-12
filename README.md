@@ -48,8 +48,10 @@ com o primeiro commit. Não publica nada nem cria repositório remoto.
 | `--no-git` | não inicia o git nem commita |
 
 O que fica para trás: histórico do git do template, `node_modules`, builds e
-`.env` pessoal. O que vai junto: `CLAUDE.md`, `docs/`, `.claude/` e `.mcp.json`
-— o projeto novo nasce com as regras e a revisão.
+`.env` pessoal. O que vai junto: `CLAUDE.md`, `docs/`, `.claude/`, `.mcp.json`,
+`biome.json` e `biome-plugins/` — o projeto novo nasce com as regras e a
+revisão. O commit do template fica anotado em `.template-origin.json`, para
+trazer depois as regras que mudarem ([como](docs/development.md#evoluir-o-template)).
 
 Dentro da pasta do template o comando também responde por
 `pnpm create-project`. E o repositório pode servir como GitHub Template

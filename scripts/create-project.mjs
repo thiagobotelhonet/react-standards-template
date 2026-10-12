@@ -107,6 +107,36 @@ await writeFile(
   htmlPath,
   html.replace(/<title>.*?<\/title>/s, () => `<title>${escapedTitle}</title>`)
 )
+const sourceGit = (...gitArgs) =>
+  execFileSync("git", gitArgs, {
+    cwd: source,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  }).trim()
+let commit = null
+let localChanges = false
+try {
+  commit = sourceGit("rev-parse", "HEAD")
+  localChanges = sourceGit("status", "--porcelain") !== ""
+} catch {
+  /* A template downloaded as a zip has no git history to record. */
+}
+const sourcePkg = JSON.parse(
+  await readFile(resolve(source, "package.json"), "utf8")
+)
+await writeFile(
+  resolve(canonicalTarget, ".template-origin.json"),
+  `${JSON.stringify(
+    {
+      template: sourcePkg.name,
+      commit,
+      localChanges,
+      createdAt: new Date().toISOString(),
+    },
+    null,
+    2
+  )}\n`
+)
 function shellQuote(value) {
   return `'${value.replaceAll("'", "'\\''")}'`
 }

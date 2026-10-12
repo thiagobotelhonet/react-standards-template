@@ -9,9 +9,9 @@ import {
   expect,
   it,
 } from "vitest"
+import { fetchSession, login, logout } from "@/features/auth"
+import { handlers, resetMockState } from "@/mocks/handlers"
 import { apiBaseUrl, setCsrfToken } from "@/shared/api/client"
-import { handlers, resetMockState } from "../../../mocks/handlers"
-import { fetchSession, login, logout } from "../../auth/api/auth.services"
 import {
   deleteItem,
   fetchItem,

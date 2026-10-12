@@ -27,6 +27,21 @@ updates:
     groups:
       # Uma PR por grupo em vez de uma por pacote. Atualização de segurança
       # continua vindo separada e na hora, sem esperar a segunda-feira.
+      #
+      # Família que é publicada junto sobe junto, mesmo com uma parte em
+      # produção e outra em desenvolvimento. Separadas, uma PR atualizou o
+      # @tanstack/router-plugin sem o @tanstack/react-router e deixou a
+      # dependência par quebrada. O Dependabot põe cada pacote no primeiro
+      # grupo que casa, por isso as famílias vêm antes dos grupos por tipo.
+      tanstack:
+        patterns: ["@tanstack/*"]
+        update-types: [minor, patch]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*"]
+        update-types: [minor, patch]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+        update-types: [minor, patch]
       producao:
         dependency-type: production
         update-types: [minor, patch]

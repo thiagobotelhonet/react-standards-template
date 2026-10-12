@@ -2,6 +2,27 @@
 
 ## Não lançado
 
+- `criar-app` grava `.template-origin.json` com o commit do template de que a
+  cópia nasceu (decisão 0010). `development.md`, "Evoluir o template", mostra
+  como trazer as regras que mudaram desde então.
+- `pnpm check` passa a barrar também NOM-03 (caminho relativo que sai do
+  módulo), CMP-04 (`src/shared` importando `src/features`) e CMP-09
+  (`<Toaster>` fora de `__root.tsx`). Arquivos de teste podem importar
+  `@/mocks`; o teste de itens deixou os caminhos relativos que contornavam as
+  regras, e `@/features/auth` passou a exportar `fetchSession`, `login` e
+  `logout`.
+- Início e edição de item mostram esqueleto enquanto carregam (CMP-07), e o
+  início pré-carrega os itens no loader (ROT-08). Novo `ItemFormSkeleton`.
+- `AppTable`: alinhada ao título da página (saiu o recuo lateral próprio),
+  cabeçalho ordenável anuncia a ordem com `aria-sort`, e a opção `align` de
+  `AppTableSortableHeader`, sem uso, saiu.
+- Removidos de `src/styles.css` os tokens sem uso `brand*`,
+  `--container-content` e `--transition-property-width`.
+- Dependabot agrupa por família (TanStack, Tailwind, React) acima da divisão
+  entre produção e desenvolvimento, para não repetir o descompasso entre
+  `@tanstack/react-router` e `@tanstack/router-plugin`.
+- O workflow do gerador roda também quando mudam `biome.json` e
+  `biome-plugins/`.
 - `pnpm check` passa a barrar NOM-02, COD-05, CMP-02, CMP-03, COR-01, COR-03,
   API-01 e ROT-08: regras do Biome e plugins GritQL em `biome-plugins/`,
   copiados para os projetos gerados. CMP-02, CMP-03, COR-01 e API-01 saíram da
