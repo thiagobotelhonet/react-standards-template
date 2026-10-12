@@ -45,6 +45,7 @@ test("gera uma cópia independente, personaliza identidade e preserva destinos e
       "docs/standards.md",
       "docs/decisions/0001-react-vite-tanstack-router.md",
       ".claude/skills/app-review-standards/SKILL.md",
+      "biome-plugins/no-native-elements.grit",
     ])
       assert.equal(
         await readFile(join(destination, rules), "utf8"),

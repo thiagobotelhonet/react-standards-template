@@ -11,6 +11,9 @@ import { RequestError } from "@/shared/components/request-error"
 import { Button } from "@/shared/components/ui/button"
 
 export const Route = createFileRoute("/_app/items/$itemId/edit")({
+  loader: ({ context, params }) => {
+    void context.queryClient.prefetchQuery(itemQueryOptions(params.itemId))
+  },
   component: EditItem,
 })
 function EditItem() {

@@ -1,0 +1,10 @@
+language js
+
+or {
+  JsxString(),
+  JsStringLiteralExpression(),
+  JsTemplateChunkElement()
+} as $text where {
+  $text <: r"(?s).*\b[a-z-]+-\[[^\]]*[0-9][^\]]*\].*",
+  register_diagnostic(span=$text, message="COR-03 — Medida entre colchetes é proibida: use a escala do Tailwind ou crie um token.")
+}

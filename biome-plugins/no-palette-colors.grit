@@ -1,0 +1,13 @@
+language js
+
+or {
+  JsxString(),
+  JsStringLiteralExpression(),
+  JsTemplateChunkElement()
+} as $text where {
+  $text <: or {
+    r"(?s).*(?:\b(?:bg|text|border|ring|fill|stroke|from|via|to|outline|divide|shadow|accent|caret|decoration)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+\b|-\[#[0-9a-fA-F]+\]).*",
+    r"[\"'`]#[0-9a-fA-F]+[\"'`]"
+  },
+  register_diagnostic(span=$text, message="COR-01 — Componente nunca escreve cor pronta: use um token de src/styles.css (COR-02).")
+}

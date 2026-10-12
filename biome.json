@@ -45,6 +45,26 @@
   },
   "overrides": [
     {
+      "includes": ["src/**", "!src/shared/components/ui/**"],
+      "plugins": [
+        "./biome-plugins/no-native-elements.grit",
+        "./biome-plugins/no-as-child.grit",
+        "./biome-plugins/no-palette-colors.grit",
+        "./biome-plugins/no-arbitrary-values.grit",
+        "./biome-plugins/no-leading-slash-api-path.grit"
+      ],
+      "linter": {
+        "rules": {
+          "style": { "noDefaultExport": "error" },
+          "performance": { "noNamespaceImport": "error" }
+        }
+      }
+    },
+    {
+      "includes": ["src/routes/**"],
+      "plugins": ["./biome-plugins/loader-prefetches.grit"]
+    },
+    {
       "includes": ["src/shared/components/ui/**"],
       "linter": { "enabled": false }
     }

@@ -67,6 +67,7 @@ const entries = [
   "pnpm-workspace.yaml",
   "tsconfig.json",
   "biome.json",
+  "biome-plugins",
   "components.json",
   "index.html",
   "vite.config.ts",

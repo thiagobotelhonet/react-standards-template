@@ -4,8 +4,8 @@ import { useRouter } from "@tanstack/react-router"
 import { isDemo } from "@/config/app"
 import { RequestError } from "@/shared/components/request-error"
 import { Button } from "@/shared/components/ui/button"
+import { Field, FieldError, FieldLabel } from "@/shared/components/ui/field"
 import { Input } from "@/shared/components/ui/input"
-import { Label } from "@/shared/components/ui/label"
 import { login } from "../api/auth.services"
 import { loginSchema } from "../types/auth.schemas"
 
@@ -40,44 +40,49 @@ export function LoginForm() {
     >
       {mutation.error && <RequestError error={mutation.error} />}
       <form.Field name="email">
-        {(field) => (
-          <div className="space-y-2">
-            <Label htmlFor="email">E-mail</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="username"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(event) => field.handleChange(event.target.value)}
-              aria-invalid={field.state.meta.errors.length > 0}
-              aria-describedby="email-error"
-            />
-            <p id="email-error" className="text-destructive text-sm">
-              {field.state.meta.errors.map((error) => error?.message).join(" ")}
-            </p>
-          </div>
-        )}
+        {(field) => {
+          const invalid = field.state.meta.errors.length > 0
+          return (
+            <Field data-invalid={invalid}>
+              <FieldLabel htmlFor="email">E-mail</FieldLabel>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="username"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(event) => field.handleChange(event.target.value)}
+                aria-invalid={invalid}
+                aria-describedby={invalid ? "email-error" : undefined}
+              />
+              <FieldError id="email-error" errors={field.state.meta.errors} />
+            </Field>
+          )
+        }}
       </form.Field>
       <form.Field name="password">
-        {(field) => (
-          <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
-            <Input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(event) => field.handleChange(event.target.value)}
-              aria-invalid={field.state.meta.errors.length > 0}
-              aria-describedby="password-error"
-            />
-            <p id="password-error" className="text-destructive text-sm">
-              {field.state.meta.errors.map((error) => error?.message).join(" ")}
-            </p>
-          </div>
-        )}
+        {(field) => {
+          const invalid = field.state.meta.errors.length > 0
+          return (
+            <Field data-invalid={invalid}>
+              <FieldLabel htmlFor="password">Senha</FieldLabel>
+              <Input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(event) => field.handleChange(event.target.value)}
+                aria-invalid={invalid}
+                aria-describedby={invalid ? "password-error" : undefined}
+              />
+              <FieldError
+                id="password-error"
+                errors={field.state.meta.errors}
+              />
+            </Field>
+          )
+        }}
       </form.Field>
       <Button type="submit" size="lg" disabled={mutation.isPending}>
         {mutation.isPending ? "Entrando…" : "Entrar"}

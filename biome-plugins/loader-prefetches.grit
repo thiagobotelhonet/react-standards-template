@@ -1,0 +1,8 @@
+language js
+
+or {
+  `$client.ensureQueryData($_)`,
+  `await $client.prefetchQuery($_)`
+} as $call where {
+  register_diagnostic(span=$call, message="ROT-08 — O loader pré-carrega, não espera: use void context.queryClient.prefetchQuery(...).")
+}
