@@ -21,7 +21,7 @@ A API é separada e não faz parte deste repositório.
 
 - Rode `pnpm verify` antes de dar um trabalho por concluído. Mexeu em sessão,
   navegação ou gravação? Rode também `pnpm test:e2e`.
-- Só pnpm, nunca npm ou yarn. Node 24.
+- Só pnpm, nunca npm ou yarn. Node 24.15 ou mais novo da linha 24.
 
 ## Leia antes de agir
 

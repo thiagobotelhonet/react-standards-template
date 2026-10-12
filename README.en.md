@@ -65,7 +65,7 @@ generates a project from scratch to check the generator. What each workflow cove
 ## Stack
 
 React 19, TypeScript, Vite, TanStack Router, Query, Form and Table, Tailwind 4, Base UI through the
-shadcn preset, Zod, ky, Biome, Vitest with MSW, Playwright. Node 24 and pnpm 10.33.0.
+shadcn preset, Zod, ky, Biome, Vitest with MSW, Playwright. Node 24.15 or newer on the 24 line, and pnpm 10.33.0.
 
 ## Quick start
 

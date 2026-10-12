@@ -637,7 +637,8 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 **DEVE**
 
-- Declarado em `packageManager`, com Node 24 (`.node-version`, `engines`).
+- Declarado em `packageManager`, com Node 24.15 ou mais novo da linha 24
+  (`.node-version`, `engines`): é o mínimo que o jsdom pede.
 - `npm install` ou `yarn` criam outra trava, com outras versões. Decisão 0007.
 
 ### FER-02 — Dependência nova precisa de consumidor concreto
