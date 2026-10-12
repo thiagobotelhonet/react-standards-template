@@ -27,8 +27,9 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### NOM-02 — Exportação nomeada em todo arquivo de `src/`
 
-**NÃO DEVE** usar `export default`.
+**NÃO DEVE** · **Cobra:** Biome
 
+- Nada de `export default` em `src/`.
 - Por quê: o nome da coisa não muda de arquivo para arquivo, e a busca do
   editor encontra quem usa.
 - Arquivo de configuração na raiz (`vite.config.ts`, `biome.json`) segue o
@@ -108,7 +109,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### COD-05 — React importado por nome
 
-**DEVE**
+**DEVE** · **Cobra:** Biome
 
 - `import { useState } from "react"`, nunca `import * as React` em código do
   projeto. Arquivos de `ui/` são gerados e ficam de fora.
@@ -168,11 +169,13 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### CMP-02 — Toda peça visual sai do shadcn
 
-**DEVE** · **Cobra:** varredura da revisão
+**DEVE** · **Cobra:** Biome
 
 - Elemento nativo que já tem primitiva instalada em
   `src/shared/components/ui/` é proibido fora dessa pasta: `<select>`,
   `<input>`, `<textarea>`, `<button>`, `<label>`, `<table>` e família, `<hr>`.
+- A lista mora em `biome-plugins/no-native-elements.grit`. Instalou ou
+  removeu uma primitiva dessas? Ajuste a lista no mesmo trabalho.
 - A primitiva ainda não existe? Consulte o MCP do shadcn para achar o
   componente e instale: `pnpm exec shadcn add <componente>`.
 - O shadcn não tem essa peça? Aí sim componha à mão, a partir das primitivas
@@ -185,7 +188,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### CMP-03 — Composição por `render`, nunca `asChild`
 
-**NÃO DEVE**
+**NÃO DEVE** · **Cobra:** Biome
 
 - Base UI usa `render`: `<DropdownMenuTrigger render={<Button />} />`.
 - Por quê: `asChild` é a API do Radix. Aqui ela não existe e falha calada.
@@ -221,7 +224,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 **DEVERIA**
 
-- `AppTableSkeleton` e `AppTableCardSkeleton` para listas; para o resto, um
+- `AppTableSkeleton` para listas; para o resto, um
   esqueleto com a mesma altura e o mesmo número de blocos da tela pronta.
 - Marque a região com `aria-busy` e um texto "Carregando…" em `sr-only`.
 - Por quê: esqueleto fora de escala faz a tela pular quando o dado chega.
@@ -254,7 +257,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### COR-01 — Componente nunca escreve cor pronta
 
-**NÃO DEVE**
+**NÃO DEVE** · **Cobra:** Biome
 
 - Nada de `bg-blue-500`, `text-green-700` ou `#0f172a` no `className`.
 - Use os tokens: `bg-card`, `text-muted-foreground`, `text-destructive`,
@@ -272,8 +275,9 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### COR-03 — Medida entre colchetes é proibida
 
-**NÃO DEVE** escrever `w-[327px]` ou `text-[13px]`.
+**NÃO DEVE** · **Cobra:** Biome
 
+- Nada de `w-[327px]` ou `text-[13px]`.
 - Use a escala do Tailwind. Se a medida se repetir e não estiver na escala,
   vire token no tema (COR-02).
 
@@ -346,13 +350,14 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### ROT-08 — O loader pré-carrega, não espera
 
-**DEVE**
+**DEVE** · **Cobra:** Biome
 
 - `void context.queryClient.prefetchQuery(...)`, sem `await` e sem
   `ensureQueryData`.
 - A tela mostra esqueleto (CMP-07) enquanto a consulta chega.
-- Exceção: a guarda de sessão em `_app.tsx` espera de propósito — ela precisa
-  da resposta para decidir entre a tela e o redirecionamento (SEG-02).
+- Exceção: as guardas de sessão em `_app.tsx` e `login.tsx` esperam de
+  propósito, no `beforeLoad` — precisam da resposta para decidir entre a tela e
+  o redirecionamento (SEG-02).
 - Por quê: loader que espera segura a navegação e deixa a tela anterior
   congelada.
 
@@ -366,7 +371,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### API-01 — Caminho do cliente HTTP nunca começa com barra
 
-**DEVE**
+**DEVE** · **Cobra:** Biome
 
 - `requestJson(itemSchema, "items")`, nunca `"/items"`.
 - Por quê: o `baseUrl` do ky é `/api/` ou o valor de `VITE_API_URL`. A barra no
@@ -510,8 +515,8 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 **DEVE**
 
-- `<Label htmlFor>`, `aria-invalid` quando houver erro e mensagem apontada por
-  `aria-describedby`.
+- `Field` com `data-invalid`, `FieldLabel htmlFor`, `aria-invalid` no
+  controle quando houver erro e `FieldError` apontado por `aria-describedby`.
 - Por quê: sem isso o erro existe na tela e não existe para quem usa leitor.
 
 ### FRM-04 — Mensagem de erro em português, escrita no esquema

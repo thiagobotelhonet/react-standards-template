@@ -17,17 +17,18 @@ Abra `http://localhost:3000`. O formulário vem preenchido com `demo@example.com
 
 ## Criar outro projeto
 
-Registre o comando uma vez, apontando para o script deste template:
+Registre o comando uma vez, a partir da pasta do template:
 
 ```bash
-ln -sf "$PWD/scripts/create-project.mjs" ~/.local/bin/criar-app
+pnpm link --global
 ```
 
-Rode a partir da pasta do template; `~/.local/bin` precisa estar no `PATH`.
-Depois disso `criar-app` funciona de qualquer pasta da máquina e sempre usa o
-estado atual do template, porque é um link para o arquivo vivo. Para remover:
-`rm ~/.local/bin/criar-app`. O diretório pai do destino deve existir; o destino
-precisa ser novo.
+Funciona em Linux, macOS e Windows. Se o pnpm reclamar do diretório global,
+rode `pnpm setup` uma vez e abra um terminal novo. Depois disso `criar-app`
+funciona de qualquer pasta da máquina e sempre usa o estado atual do template,
+porque é um link para a pasta viva. Para remover:
+`pnpm remove --global react-app-template`. O diretório pai do destino deve
+existir; o destino precisa ser novo.
 
 ```bash
 criar-app ~/dev/meu-sistema --title "Meu Sistema"

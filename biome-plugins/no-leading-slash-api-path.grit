@@ -1,0 +1,9 @@
+language js
+
+or {
+  `api.$method($path, $...)`,
+  `requestJson($_, $path, $...)`
+} where {
+  $path <: r"(?s)[\"'`]/.*",
+  register_diagnostic(span=$path, message="API-01 — Caminho do cliente HTTP nunca começa com barra: a barra descarta o prefixo da API.")
+}

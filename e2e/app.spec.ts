@@ -5,6 +5,8 @@ test("sessão, CRUD, busca e logout", async ({ page }) => {
   await expect(page).toHaveURL(/\/login$/)
   await page.getByRole("button", { name: "Entrar", exact: true }).click()
   await expect(page.getByRole("heading", { name: "Olá, Alex." })).toBeVisible()
+  await page.goto("/login")
+  await expect(page.getByRole("heading", { name: "Olá, Alex." })).toBeVisible()
   await page.getByRole("link", { name: "Novo item", exact: true }).click()
   await page
     .getByLabel("Nome", { exact: true })

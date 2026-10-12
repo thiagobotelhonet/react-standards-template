@@ -173,7 +173,6 @@ function scanLines(rule, files, pattern, describe = (l) => l.trim()) {
 const live = scope.filter((f) => f.content !== null)
 const code = live.filter((f) => isCode(f.path))
 const appCode = code.filter((f) => !isTest(f.path))
-const tsx = code.filter((f) => f.path.endsWith(".tsx"))
 
 for (const { path } of scope.filter(
   (f) =>
@@ -202,38 +201,10 @@ for (const { path } of scope.filter((f) => f.status !== "apagado")) {
   if (atRoot && !["index.ts", "README.md"].includes(atRoot[2]))
     suspect("NOM-05", path, 0, "arquivo solto na raiz do módulo")
 }
-scanLines("NOM-02", code, /export\s+default\b/)
-scanLines(
-  "COD-05",
-  code,
-  /import\s+\*\s+as\s+React\b/,
-  (l) => `${l.trim()} (fora de ui/, React vem por nome)`
-)
 scanLines("COD-01/COD-02", code, /^\s*(\/\/(?!\/)|\/\*|\{\s*\/\*)/)
 for (const { path, status } of scope)
   if (isUi(path) && status === "alterado")
     suspect("CMP-01", path, 0, "arquivo gerado pelo shadcn foi alterado")
-const PRIMITIVE_TAGS = {
-  select: ["select"],
-  input: ["input"],
-  textarea: ["textarea"],
-  button: ["button"],
-  label: ["label"],
-  separator: ["hr"],
-  table: ["table", "thead", "tbody", "tfoot", "tr", "td", "th"],
-}
-const uiDir = join(root, "src/shared/components/ui")
-const nativeWithPrimitive = (
-  existsSync(uiDir) ? readdirSync(uiDir) : []
-).flatMap((file) => PRIMITIVE_TAGS[file.replace(/\.tsx$/, "")] ?? [])
-if (nativeWithPrimitive.length)
-  scanLines(
-    "CMP-02",
-    tsx,
-    new RegExp(`<(${nativeWithPrimitive.join("|")})[\\s/>]`),
-    (l) => `${l.trim()} (elemento nativo com primitiva em ui/)`
-  )
-scanLines("CMP-03", code, /\basChild\b/)
 scanLines(
   "CMP-05",
   code.filter((f) => f.path !== "src/shared/components/app-table.tsx"),
@@ -244,12 +215,6 @@ scanLines(
   code.filter((f) => f.path !== "src/routes/__root.tsx"),
   /<Toaster\b/
 )
-scanLines(
-  "COR-01",
-  tsx,
-  /(["'`\s])#[0-9a-fA-F]{3,8}\b|\b(bg|text|border|ring|fill|stroke|from|via|to|outline|divide|shadow|accent|caret|decoration)-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b/
-)
-scanLines("COR-03", tsx, /\b[a-z-]+-\[[^\]]*\d[^\]]*\]/)
 
 const styles = live.find((f) => f.path === "src/styles.css")
 if (styles) {
@@ -312,16 +277,6 @@ for (const { path, content } of code.filter(
       suspect("ROT-05", path, index + 1, line.trim())
   })
 }
-scanLines(
-  "ROT-08",
-  code.filter((f) => f.path.startsWith("src/routes/")),
-  /ensureQueryData|await\s+context\.queryClient\.prefetchQuery/
-)
-scanLines(
-  "API-01",
-  code,
-  /\bapi\.(get|post|put|patch|delete|head)\(\s*["'`]\/|requestJson\([^,]+,\s*["'`]\//
-)
 for (const { path, content } of appCode.filter(
   (f) =>
     !f.path.startsWith("src/mocks/") && f.path !== "src/shared/api/client.ts"

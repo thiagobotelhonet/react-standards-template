@@ -24,17 +24,9 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
   Columns3Icon,
-  SearchIcon,
 } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/shared/components/ui/button"
-import {
-  Card,
-  CardAction,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/shared/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -42,11 +34,6 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu"
 import { Input } from "@/shared/components/ui/input"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/shared/components/ui/input-group"
 import { Label } from "@/shared/components/ui/label"
 import {
   Select,
@@ -451,313 +438,72 @@ export function AppTable<TData extends RowData>({
   emptyMessage,
   search,
   pagination,
-  embedded = false,
 }: {
   table: AppTableInstance<TData>
   columnLabels: Record<string, string>
   emptyMessage: string
   search?: SearchOptions
   pagination?: { itemName?: string }
-  /** Tabela dentro de uma seção: sem a caixa própria nem a barra de colunas. */
-  embedded?: boolean
 }) {
   const rows = table.getRowModel().rows
   const columnCount = table.getAllLeafColumns().length
 
-  const content = (
-    <>
-      {!embedded && (
+  return (
+    <div className="px-4 lg:px-6">
+      <AppTablePanel>
         <div className="flex items-center justify-between gap-2">
           {search ? <AppTableSearch {...search} /> : <div />}
           <AppTableColumnToggle table={table} columnLabels={columnLabels} />
         </div>
-      )}
 
-      <div className="overflow-hidden rounded-lg border">
-        <Table className={tableEdgePaddingClassName}>
-          <TableHeader className="sticky top-0 z-10 bg-muted">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    className="text-muted-foreground text-xs"
-                  >
-                    {header.isPlaceholder ? null : (
-                      <FlexRender header={header} />
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {rows.length ? (
-              rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      <FlexRender cell={cell} />
-                    </TableCell>
+        <div className="overflow-hidden rounded-lg border">
+          <Table className={tableEdgePaddingClassName}>
+            <TableHeader className="sticky top-0 z-10 bg-muted">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="text-muted-foreground text-xs"
+                    >
+                      {header.isPlaceholder ? null : (
+                        <FlexRender header={header} />
+                      )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columnCount} className="h-24 text-center">
-                  {emptyMessage}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      {pagination && (
-        <AppTablePagination
-          table={table}
-          itemName={pagination.itemName ?? "linhas"}
-        />
-      )}
-    </>
-  )
-
-  if (embedded) return <div className="flex flex-col gap-4">{content}</div>
-
-  return (
-    <div className="px-4 lg:px-6">
-      <AppTablePanel>{content}</AppTablePanel>
-    </div>
-  )
-}
-
-const cardTableClassName =
-  "**:data-[slot=table-cell]:first:pl-5 **:data-[slot=table-cell]:last:pr-5 **:data-[slot=table-head]:first:pl-5 **:data-[slot=table-head]:last:pr-5"
-
-const cardTableHeadClassName =
-  "h-10 font-medium text-muted-foreground text-xs uppercase tracking-wider"
-
-function AppTableCardFrame({
-  title,
-  action,
-  busy = false,
-  children,
-}: {
-  title: string
-  action?: React.ReactNode
-  busy?: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <Card className="gap-0 py-0" aria-busy={busy || undefined}>
-      {busy && <span className="sr-only">Carregando…</span>}
-      <CardHeader className="items-center border-b px-5 py-4">
-        <CardTitle className="font-semibold">{title}</CardTitle>
-        {action && (
-          <CardAction className="row-span-1 self-center">{action}</CardAction>
-        )}
-      </CardHeader>
-      {children}
-    </Card>
-  )
-}
-
-function AppTableCardSearch({ label, onChange, value }: SearchOptions) {
-  const { term, changeTerm } = useAppTableSearch({ value, onChange })
-
-  return (
-    <InputGroup className="sm:max-w-sm">
-      <InputGroupInput
-        type="search"
-        aria-label={label}
-        placeholder={label}
-        value={term}
-        onChange={(event) => changeTerm(event.target.value)}
-      />
-      <InputGroupAddon>
-        <SearchIcon />
-      </InputGroupAddon>
-    </InputGroup>
-  )
-}
-
-function AppTableCardToolbar({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-3 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-      {children}
-    </div>
-  )
-}
-
-export function AppTableCard<TData extends RowData>({
-  table,
-  title,
-  action,
-  search,
-  toolbarEnd,
-  emptyMessage,
-  pagination,
-  footer,
-  alignTop = false,
-}: {
-  table: AppTableInstance<TData>
-  title: string
-  action?: React.ReactNode
-  search?: SearchOptions
-  toolbarEnd?: React.ReactNode
-  emptyMessage: string
-  pagination?: { itemName: string }
-  footer?: React.ReactNode
-  alignTop?: boolean
-}) {
-  const rows = table.getRowModel().rows
-
-  return (
-    <AppTableCardFrame title={title} action={action}>
-      {(search || toolbarEnd) && (
-        <AppTableCardToolbar>
-          {search ? <AppTableCardSearch {...search} /> : <div />}
-          {toolbarEnd && (
-            <div className="flex flex-wrap items-center gap-2">
-              {toolbarEnd}
-            </div>
-          )}
-        </AppTableCardToolbar>
-      )}
-
-      <Table className={cardTableClassName}>
-        <TableHeader className="bg-muted/50">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-transparent">
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  colSpan={header.colSpan}
-                  className={cardTableHeadClassName}
-                >
-                  {header.isPlaceholder ? null : <FlexRender header={header} />}
-                </TableHead>
               ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {rows.length ? (
-            rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={cn("py-4", alignTop && "align-top")}
-                  >
-                    <FlexRender cell={cell} />
+            </TableHeader>
+            <TableBody>
+              {rows.length ? (
+                rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        <FlexRender cell={cell} />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columnCount} className="h-24 text-center">
+                    {emptyMessage}
                   </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell
-                colSpan={table.getAllLeafColumns().length}
-                className="h-24 text-center text-muted-foreground"
-              >
-                {emptyMessage}
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
-      {pagination && (
-        <div className="border-t px-5 py-4">
-          <AppTablePagination table={table} itemName={pagination.itemName} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
-      )}
-      {footer && (
-        <CardFooter className="justify-between gap-4 px-5 py-4 text-muted-foreground text-xs">
-          {footer}
-        </CardFooter>
-      )}
-    </AppTableCardFrame>
-  )
-}
 
-export function AppTableCardSkeleton({
-  title,
-  columns,
-  rows,
-  action = false,
-  toolbar = false,
-  footer,
-}: {
-  title: string
-  columns: readonly string[] | number
-  rows: number
-  action?: boolean
-  toolbar?: boolean
-  footer?: "pagination" | "summary"
-}) {
-  const headers =
-    typeof columns === "number" ? skeletonIds("coluna", columns) : columns
-
-  return (
-    <AppTableCardFrame
-      busy
-      title={title}
-      action={action && <Skeleton className="h-9.5 w-36" />}
-    >
-      {toolbar && (
-        <AppTableCardToolbar>
-          <Skeleton className="h-9.5 w-full sm:max-w-sm" />
-          <Skeleton className="h-9.5 w-44" />
-        </AppTableCardToolbar>
-      )}
-
-      <Table className={cardTableClassName}>
-        <TableHeader className="bg-muted/50">
-          <TableRow className="hover:bg-transparent">
-            {headers.map((header) => (
-              <TableHead key={header} className={cardTableHeadClassName}>
-                {typeof columns === "number" ? (
-                  <Skeleton className="h-3 w-16" />
-                ) : (
-                  header
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {skeletonIds("linha", rows).map((rowId) => (
-            <TableRow key={rowId}>
-              {headers.map((header) => (
-                <TableCell key={header} className="py-4">
-                  <Skeleton className="h-5 w-full max-w-32" />
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      {footer === "pagination" && (
-        <div className="flex items-center justify-between border-t px-5 py-4">
-          <Skeleton className="hidden h-5 w-48 lg:block" />
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
-            <Skeleton className="mr-6 h-5 w-24" />
-            {skeletonIds("pagina", 4).map((id) => (
-              <Skeleton key={id} className="size-8" />
-            ))}
-          </div>
-        </div>
-      )}
-      {footer === "summary" && (
-        <CardFooter className="justify-between gap-4 px-5 py-4">
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-4 w-32" />
-        </CardFooter>
-      )}
-    </AppTableCardFrame>
+        {pagination && (
+          <AppTablePagination
+            table={table}
+            itemName={pagination.itemName ?? "linhas"}
+          />
+        )}
+      </AppTablePanel>
+    </div>
   )
 }

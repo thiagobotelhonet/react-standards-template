@@ -2,6 +2,23 @@
 
 ## Não lançado
 
+- `pnpm check` passa a barrar NOM-02, COD-05, CMP-02, CMP-03, COR-01, COR-03,
+  API-01 e ROT-08: regras do Biome e plugins GritQL em `biome-plugins/`,
+  copiados para os projetos gerados. CMP-02, CMP-03, COR-01 e API-01 saíram da
+  lista de regras que quebram em silêncio do `CLAUDE.md`, e a varredura da
+  skill de revisão deixou de procurar o que o Biome já cobra.
+- `criar-app` passa a ser registrado com `pnpm link --global`, que funciona
+  também no Windows; o symlink manual em `~/.local/bin` saiu do README.
+- `/login` com sessão ativa redireciona para o início em vez de mostrar o
+  formulário de novo.
+- Formulários de exemplo usam `Field`, `FieldLabel` e `FieldError` do shadcn;
+  o campo "Situação" ganhou mensagem de erro e a descrição, `onBlur`.
+- A edição de item pré-carrega o registro no loader (ROT-08).
+- Removidos `AppTableCard`, `AppTableCardSkeleton`, a opção `embedded` de
+  `AppTable` e as primitivas `card`, `input-group`, `popover` e `tooltip`, que
+  não tinham consumidor (NOM-05, COD-04). Quem precisar reinstala com
+  `pnpm exec shadcn add`.
+- `@types/node` e `@playwright/test` fixados em versão exata, como o resto.
 - MCP do shadcn configurado por projeto em `.mcp.json`, incluído nas cópias
   geradas.
 - Regras do projeto em Markdown: `CLAUDE.md` com comandos, ordem de leitura e as

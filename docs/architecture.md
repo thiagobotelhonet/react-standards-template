@@ -44,6 +44,7 @@ src/
   mocks/              simulação exclusiva do desenvolvimento/testes
 e2e/                  jornadas Playwright
 scripts/              criação de novos projetos
+biome-plugins/        regras de docs/standards.md cobradas pelo Biome
 ```
 
 Pastas só são criadas quando usadas. Um módulo pequeno pode ter menos arquivos. A rota pode compor uma tela inteira; extraia componentes quando houver responsabilidade ou reutilização concreta.
@@ -72,7 +73,7 @@ flowchart LR
 
 ## Fronteiras e manutenção
 
-O Biome bloqueia imports por alias para o interior de outro domínio. Imports relativos atravessando módulos precisam ser evitados na revisão; a regra não substitui análise de dependências. `shared` recebe dados e ações da rota, sem conhecer `features`.
+O Biome bloqueia imports por alias para o interior de outro domínio. Os plugins GritQL em `biome-plugins/` barram, no `pnpm check`, as regras que dá para detectar sem ambiguidade: elemento nativo com primitiva, `asChild`, cor pronta, medida entre colchetes, caminho da API com barra e loader que espera. Imports relativos atravessando módulos precisam ser evitados na revisão; a regra não substitui análise de dependências. `shared` recebe dados e ações da rota, sem conhecer `features`.
 
 Nome, cores e menu são pontos de configuração concretos. Não há um motor genérico de CRUD, contêiner de injeção, sistema de plugins, monorepo ou biblioteca de componentes publicada. Essas opções acrescentariam manutenção sem requisitos atuais.
 

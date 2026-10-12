@@ -1,0 +1,23 @@
+language js
+
+or {
+  JsxOpeningElement(name=$name),
+  JsxSelfClosingElement(name=$name)
+} as $element where {
+  $name <: or {
+    `select`,
+    `input`,
+    `textarea`,
+    `button`,
+    `label`,
+    `hr`,
+    `table`,
+    `thead`,
+    `tbody`,
+    `tfoot`,
+    `tr`,
+    `td`,
+    `th`
+  },
+  register_diagnostic(span=$element, message="CMP-02 — Toda peça visual sai do shadcn: use a primitiva de src/shared/components/ui/ no lugar do elemento nativo.")
+}

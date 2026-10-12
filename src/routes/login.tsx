@@ -1,11 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 import { ArrowUpRightIcon } from "lucide-react"
 import { appConfig } from "@/config/app"
 import { LoginForm, sessionQueryOptions } from "@/features/auth"
 
 export const Route = createFileRoute("/login")({
-  loader: ({ context }) =>
-    context.queryClient.fetchQuery(sessionQueryOptions()),
+  beforeLoad: async ({ context }) => {
+    const user = await context.queryClient.fetchQuery(sessionQueryOptions())
+    if (user) throw redirect({ to: "/", replace: true })
+  },
   component: () => (
     <main className="flex min-h-screen items-center justify-center bg-canvas px-5 py-12">
       <div className="w-full max-w-sm">

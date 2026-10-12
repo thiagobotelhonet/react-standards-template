@@ -17,7 +17,7 @@ A API é separada e não faz parte deste repositório.
 | `pnpm typecheck` | tipos |
 | `pnpm check` | Biome; `pnpm format` corrige o que der |
 | `pnpm verify` | `check`, `typecheck`, `test`, gerador e `build` |
-| `criar-app <destino>` | cria uma cópia independente, de qualquer pasta (symlink em `~/.local/bin`) |
+| `criar-app <destino>` | cria uma cópia independente, de qualquer pasta (registrado com `pnpm link --global`) |
 
 - Rode `pnpm verify` antes de dar um trabalho por concluído. Mexeu em sessão,
   navegação ou gravação? Rode também `pnpm test:e2e`.
@@ -47,18 +47,12 @@ Não dão erro quando descumpridas. Quebrar qualquer uma bloqueia a revisão.
   caminho para dentro dele.
 - **CMP-01** — `src/shared/components/ui/` não se edita à mão; use
   `pnpm exec shadcn add <componente>`.
-- **CMP-02** — Elemento nativo que tem primitiva em `ui/` é proibido:
-  `<select>`, `<input>`, `<button>`, `<label>`, `<table>`, `<hr>`. Toda peça
-  visual sai do shadcn.
-- **CMP-03** — Composição por `render`, nunca `asChild` (Base UI).
-- **COR-01** — Nenhuma cor pronta (`text-green-700`, hexadecimal); só token.
 - **COR-02** — Token de cor novo vai em `:root`, `.dark` e `@theme inline`.
 - **ROT-01** — `__root.tsx` não busca dado de usuário; a guarda de sessão mora
   em `_app.tsx`.
 - **ROT-02** — Arquivo de rota não tem regra de negócio.
 - **ROT-04** — Filtro, página, ordenação e busca vão na URL.
 - **ROT-05** — Todo parâmetro da URL tem `default` e `catch`.
-- **API-01** — Caminho do cliente HTTP sem barra no começo: `api.get("items")`.
 - **API-02** — Toda resposta passa por `requestJson(schema, url)`.
 - **API-03** — O serviço recebe e repassa o `AbortSignal` da consulta.
 - **API-04** — Chave do cache só nasce em `*.queries.ts`.
@@ -71,6 +65,10 @@ Não dão erro quando descumpridas. Quebrar qualquer uma bloqueia a revisão.
 - **AMB-03** — MSW só no modo `mock` em desenvolvimento; o worker nunca vai
   para `public/` nem para o build.
 - **FER-03** — `src/routeTree.gen.ts` é gerado; não se edita à mão.
+
+Estas o `pnpm check` já barra, pelos plugins em `biome-plugins/` e por regras
+do Biome: NOM-02, COD-05, CMP-02, CMP-03, COR-01, COR-03, API-01 e ROT-08.
+Regra que dá para detectar sem ambiguidade vira plugin, não item desta lista.
 
 ## Antes de afirmar que algo está certo
 
