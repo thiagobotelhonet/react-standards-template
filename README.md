@@ -104,6 +104,8 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
+Se o download do Chromium falhar com `self-signed certificate in certificate chain`, a rede inspeciona HTTPS com um certificado que o Windows ou o macOS conhecem e o Node não. Faça o Node usar os certificados do sistema, sem desligar a verificação: `NODE_OPTIONS=--use-system-ca pnpm exec playwright install chromium`.
+
 `verify` executa Biome, TypeScript, testes, verificação do gerador e build. O build verifica também a exclusão dos mocks. Os testes MSW atravessam os serviços HTTP e as regras simuladas; Playwright verifica a jornada no navegador. O CI executa os dois grupos, pula os jobs de código quando a mudança é só de texto e gera um projeto do zero para conferir o gerador; o que cada workflow cobra está em [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## Publicar

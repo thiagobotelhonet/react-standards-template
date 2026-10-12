@@ -85,6 +85,9 @@ jobs:
           pnpm check
           pnpm typecheck
           pnpm test
+          # A cópia também gera projetos: o teste do gerador precisa passar
+          # com o nome e o git dela, não só com os do template.
+          pnpm test:generator
           pnpm build
 
       - name: Links do Markdown no projeto gerado

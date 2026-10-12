@@ -57,7 +57,10 @@ test("gera uma cópia independente, personaliza identidade e preserva destinos e
     const { stdout: templateHead } = await run("git", ["rev-parse", "HEAD"], {
       cwd: fileURLToPath(new URL("..", import.meta.url)),
     })
-    assert.equal(origin.template, "react-app-template")
+    const templatePkg = JSON.parse(
+      await readFile(new URL("../package.json", import.meta.url), "utf8")
+    )
+    assert.equal(origin.template, templatePkg.name)
     assert.equal(origin.commit, templateHead.trim())
     assert.equal(typeof origin.localChanges, "boolean")
     const entries = await readdir(destination)

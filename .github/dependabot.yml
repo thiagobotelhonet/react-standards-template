@@ -24,6 +24,12 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "Atualiza"
+    # Os tipos do Node acompanham o Node em que o projeto roda (`.node-version`),
+    # não a versão mais nova publicada. A troca de linha do Node sobe os dois
+    # juntos, à mão.
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       # Uma PR por grupo em vez de uma por pacote. Atualização de segurança
       # continua vindo separada e na hora, sem esperar a segunda-feira.

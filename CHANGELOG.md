@@ -2,6 +2,18 @@
 
 ## Não lançado
 
+- Dependências em dia, cada atualização testada no seu commit: versões menores
+  e de correção de produção e desenvolvimento, TypeScript 7.0.2, Vitest 5.0.3,
+  jsdom 30.1.2 e MSW 3.0.3. Ação do CodeQL na 4.38.2.
+- Node mínimo sobe para 24.15 (`engines`), exigência do jsdom 30.
+- MSW 3: `onUnhandledRequest` virou `onUnhandledFrame` em `src/main.tsx`,
+  `src/mocks/browser.ts` e nos testes. Quem copiou o template e atualizar o
+  MSW precisa da mesma troca.
+- `pnpm-workspace.yaml` libera o MSW 3 para o `@vitest/mocker` 5.0.3, que só o
+  declara como opcional; remover quando o Vitest chegar à 5.0.4.
+- Dependabot ignora versão maior de `@types/node`, que acompanha o Node do
+  projeto.
+- README: como instalar o Chromium do Playwright em rede que inspeciona HTTPS.
 - `criar-app` grava `.template-origin.json` com o commit do template de que a
   cópia nasceu (decisão 0010). `development.md`, "Evoluir o template", mostra
   como trazer as regras que mudaram desde então.
