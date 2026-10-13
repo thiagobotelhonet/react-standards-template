@@ -18,6 +18,11 @@ O módulo `items` é um exemplo para ler e copiar, não uma fábrica. Não há m
 de CRUD, contêiner de injeção, sistema de plugins, monorepo nem biblioteca de
 componentes publicada. Abstração só nasce com o segundo uso concreto (COD-04).
 
+"Sistema de plugins" aqui é da aplicação: um registro em que módulos se
+encaixam em tempo de execução. Os plugins do Biome em `biome-plugins/` são
+outra coisa, regras de lint que não entram no build, e não contrariam esta
+decisão.
+
 ## Consequências
 
 - Criar um módulo é escrever arquivos parecidos com os do exemplo, e isso é

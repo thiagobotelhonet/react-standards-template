@@ -13,7 +13,6 @@ import {
   tableFeatures,
   type Updater,
 } from "@tanstack/react-table"
-import { cn } from "cn"
 import {
   ArrowDownIcon,
   ArrowUpDownIcon,
@@ -140,11 +139,9 @@ const tableEdgePaddingClassName =
 export function AppTableSortableHeader<TData extends RowData, TValue>({
   header,
   label,
-  align = "left",
 }: {
   header: AppTableHeader<TData, TValue>
   label: string
-  align?: "left" | "right"
 }) {
   const direction = header.column.getIsSorted()
   const Icon =
@@ -155,20 +152,15 @@ export function AppTableSortableHeader<TData extends RowData, TValue>({
         : ArrowUpDownIcon
 
   return (
-    <div className={align === "right" ? "flex" : undefined}>
-      <Button
-        variant="ghost"
-        size="sm"
-        className={cn(
-          "text-muted-foreground text-xs hover:text-foreground",
-          align === "right" ? "-mr-2 ml-auto" : "-ml-2"
-        )}
-        onClick={() => header.column.toggleSorting()}
-      >
-        {label}
-        <Icon className="text-muted-foreground" />
-      </Button>
-    </div>
+    <Button
+      variant="ghost"
+      size="sm"
+      className="-ml-2 text-muted-foreground text-xs hover:text-foreground"
+      onClick={() => header.column.toggleSorting()}
+    >
+      {label}
+      <Icon className="text-muted-foreground" />
+    </Button>
   )
 }
 
@@ -385,7 +377,7 @@ export function AppTableSkeleton({
   const columnIds = skeletonIds("coluna", columns)
 
   return (
-    <div className="px-4 lg:px-6" aria-busy="true">
+    <div aria-busy="true">
       <span className="sr-only">Carregando…</span>
       <AppTablePanel>
         <div className="flex items-center justify-between gap-2">
@@ -449,61 +441,70 @@ export function AppTable<TData extends RowData>({
   const columnCount = table.getAllLeafColumns().length
 
   return (
-    <div className="px-4 lg:px-6">
-      <AppTablePanel>
-        <div className="flex items-center justify-between gap-2">
-          {search ? <AppTableSearch {...search} /> : <div />}
-          <AppTableColumnToggle table={table} columnLabels={columnLabels} />
-        </div>
+    <AppTablePanel>
+      <div className="flex items-center justify-between gap-2">
+        {search ? <AppTableSearch {...search} /> : <div />}
+        <AppTableColumnToggle table={table} columnLabels={columnLabels} />
+      </div>
 
-        <div className="overflow-hidden rounded-lg border">
-          <Table className={tableEdgePaddingClassName}>
-            <TableHeader className="sticky top-0 z-10 bg-muted">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className="text-muted-foreground text-xs"
-                    >
-                      {header.isPlaceholder ? null : (
-                        <FlexRender header={header} />
-                      )}
-                    </TableHead>
+      <div className="overflow-hidden rounded-lg border">
+        <Table className={tableEdgePaddingClassName}>
+          <TableHeader className="sticky top-0 z-10 bg-muted">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    aria-sort={sortState(header)}
+                    className="text-muted-foreground text-xs"
+                  >
+                    {header.isPlaceholder ? null : (
+                      <FlexRender header={header} />
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {rows.length ? (
+              rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      <FlexRender cell={cell} />
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {rows.length ? (
-                rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        <FlexRender cell={cell} />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columnCount} className="h-24 text-center">
-                    {emptyMessage}
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columnCount} className="h-24 text-center">
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
-        {pagination && (
-          <AppTablePagination
-            table={table}
-            itemName={pagination.itemName ?? "linhas"}
-          />
-        )}
-      </AppTablePanel>
-    </div>
+      {pagination && (
+        <AppTablePagination
+          table={table}
+          itemName={pagination.itemName ?? "linhas"}
+        />
+      )}
+    </AppTablePanel>
   )
+}
+
+function sortState<TData extends RowData, TValue>(
+  header: AppTableHeader<TData, TValue>
+) {
+  if (header.isPlaceholder || !header.column.getCanSort()) return undefined
+  const direction = header.column.getIsSorted()
+  if (direction === "asc") return "ascending"
+  if (direction === "desc") return "descending"
+  return "none"
 }

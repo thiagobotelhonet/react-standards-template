@@ -21,7 +21,7 @@ A API é separada e não faz parte deste repositório.
 
 - Rode `pnpm verify` antes de dar um trabalho por concluído. Mexeu em sessão,
   navegação ou gravação? Rode também `pnpm test:e2e`.
-- Só pnpm, nunca npm ou yarn. Node 24.
+- Só pnpm, nunca npm ou yarn. Node 24.15 ou mais novo da linha 24.
 
 ## Leia antes de agir
 
@@ -43,8 +43,6 @@ A API é separada e não faz parte deste repositório.
 
 Não dão erro quando descumpridas. Quebrar qualquer uma bloqueia a revisão.
 
-- **NOM-03** — Outro módulo só pelo `index.ts`: `@/features/items`, nunca um
-  caminho para dentro dele.
 - **CMP-01** — `src/shared/components/ui/` não se edita à mão; use
   `pnpm exec shadcn add <componente>`.
 - **COR-02** — Token de cor novo vai em `:root`, `.dark` e `@theme inline`.
@@ -67,7 +65,8 @@ Não dão erro quando descumpridas. Quebrar qualquer uma bloqueia a revisão.
 - **FER-03** — `src/routeTree.gen.ts` é gerado; não se edita à mão.
 
 Estas o `pnpm check` já barra, pelos plugins em `biome-plugins/` e por regras
-do Biome: NOM-02, COD-05, CMP-02, CMP-03, COR-01, COR-03, API-01 e ROT-08.
+do Biome: NOM-02, NOM-03, COD-05, CMP-02, CMP-03, CMP-04 (`src/shared` sem
+`src/features`), CMP-09, COR-01, COR-03, API-01 e ROT-08.
 Regra que dá para detectar sem ambiguidade vira plugin, não item desta lista.
 
 ## Antes de afirmar que algo está certo

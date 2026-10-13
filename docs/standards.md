@@ -41,7 +41,8 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 - Dentro do módulo: `../types/items.schemas`. Fora: `@/shared/...`.
 - Outro módulo só pelo `index.ts`: `@/features/items`. O Biome recusa
-  `@/features/items/api/...`.
+  `@/features/items/api/...` e caminho relativo que sai do módulo, como
+  `../../auth/api/...`.
 - Por quê: só assim o texto do import já diz quem é de dentro e quem é de fora.
   Detalhes em `architecture.md`, "Fronteiras e manutenção".
 
@@ -195,7 +196,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### CMP-04 — Peça usada por mais de um módulo mora em `src/shared/components/`
 
-**DEVE**
+**DEVE** · **Cobra:** Biome, só o último item
 
 - Enquanto só um módulo usa, ela fica dentro do módulo.
 - O prefixo `app-` é para as peças que montam estrutura de tela inteira
@@ -238,7 +239,7 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 ### CMP-09 — Avisos usam o sonner, com um `<Toaster>` só
 
-**DEVE**
+**DEVE** · **Cobra:** Biome
 
 - O `<Toaster>` mora em `src/routes/__root.tsx`. Em qualquer outro lugar,
   `toast.success(...)` / `toast.error(...)`.
@@ -636,7 +637,8 @@ das decisões grandes: `decisions/`. Contrato com o backend: `api-contract.md`.
 
 **DEVE**
 
-- Declarado em `packageManager`, com Node 24 (`.node-version`, `engines`).
+- Declarado em `packageManager`, com Node 24.15 ou mais novo da linha 24
+  (`.node-version`, `engines`): é o mínimo que o jsdom pede.
 - `npm install` ou `yarn` criam outra trava, com outras versões. Decisão 0007.
 
 ### FER-02 — Dependência nova precisa de consumidor concreto

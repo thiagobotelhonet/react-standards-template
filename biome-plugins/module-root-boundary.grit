@@ -1,0 +1,9 @@
+language js
+
+or {
+  JsModuleSource() as $source,
+  `import($source)`
+} where {
+  $source <: r"[\"'`]\.\./.*",
+  register_diagnostic(span=$source, message="NOM-03 — Atalho @/ fora do módulo, caminho relativo dentro: este caminho sai do módulo; importe pelo index.ts, como @/features/items.")
+}

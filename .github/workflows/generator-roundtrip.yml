@@ -15,6 +15,10 @@ on:
       - "pnpm-workspace.yaml"
       - "index.html"
       - "src/config/app.ts"
+      # O `pnpm check` do projeto gerado roda com estas regras; plugin que só
+      # funciona com o caminho do template quebra lá, e só lá.
+      - "biome.json"
+      - "biome-plugins/**"
       - ".node-version"
       - ".github/actions/install-node-dependencies/action.yml"
       - ".github/workflows/generator-roundtrip.yml"
@@ -81,6 +85,9 @@ jobs:
           pnpm check
           pnpm typecheck
           pnpm test
+          # A cópia também gera projetos: o teste do gerador precisa passar
+          # com o nome e o git dela, não só com os do template.
+          pnpm test:generator
           pnpm build
 
       - name: Links do Markdown no projeto gerado

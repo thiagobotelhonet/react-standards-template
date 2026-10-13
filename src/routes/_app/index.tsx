@@ -4,15 +4,25 @@ import { ArrowRightIcon, ListChecksIcon, PlusIcon } from "lucide-react"
 import { itemsFiltersSchema, itemsQueryOptions } from "@/features/items"
 import { RequestError } from "@/shared/components/request-error"
 import { buttonVariants } from "@/shared/components/ui/button"
+import { Skeleton } from "@/shared/components/ui/skeleton"
 import { formatNumber } from "@/shared/lib/format"
 
-export const Route = createFileRoute("/_app/")({ component: Home })
+const recentItems = itemsFiltersSchema.parse({ porPagina: 5 })
+const recentRowIds = Array.from(
+  { length: recentItems.porPagina },
+  (_, index) => `item-${index}`
+)
+
+export const Route = createFileRoute("/_app/")({
+  loader: ({ context }) => {
+    void context.queryClient.prefetchQuery(itemsQueryOptions(recentItems))
+  },
+  component: Home,
+})
 
 function Home() {
   const { user } = Route.useRouteContext()
-  const items = useQuery(
-    itemsQueryOptions(itemsFiltersSchema.parse({ porPagina: 5 }))
-  )
+  const items = useQuery(itemsQueryOptions(recentItems))
   return (
     <div className="space-y-8">
       <div>
@@ -34,9 +44,16 @@ function Home() {
             </h2>
             <ListChecksIcon className="size-5 text-primary" />
           </div>
-          <p className="mt-5 text-4xl font-semibold tracking-tight">
-            {items.data ? formatNumber(items.data.total) : "—"}
-          </p>
+          {items.isPending ? (
+            <div aria-busy="true" className="mt-5 py-1">
+              <span className="sr-only">Carregando…</span>
+              <Skeleton className="h-8 w-16" />
+            </div>
+          ) : (
+            <p className="mt-5 text-4xl font-semibold tracking-tight">
+              {items.data ? formatNumber(items.data.total) : "—"}
+            </p>
+          )}
           <p className="mt-2 text-sm text-muted-foreground">
             Total no seu espaço de trabalho
           </p>
@@ -77,9 +94,17 @@ function Home() {
             />
           </div>
         ) : items.isPending ? (
-          <p className="p-6 text-sm text-muted-foreground" role="status">
-            Carregando itens…
-          </p>
+          <div aria-busy="true">
+            <span className="sr-only">Carregando…</span>
+            <ul className="divide-y">
+              {recentRowIds.map((id) => (
+                <li key={id} className="px-6 py-4">
+                  <Skeleton className="h-4 w-48" />
+                  <Skeleton className="mt-2 h-4 w-72 max-w-full" />
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : items.data.items.length === 0 ? (
           <p className="p-6 text-sm text-muted-foreground">
             Nenhum item cadastrado.

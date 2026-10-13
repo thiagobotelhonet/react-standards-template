@@ -11,7 +11,8 @@ fica depois que o exemplo `items` for removido.
 | sair | botão na casca, em toda tela privada |
 
 Tudo que exige sessão fica sob `src/routes/_app/` (ROT-03). A guarda é o
-`beforeLoad` de `_app.tsx`.
+`beforeLoad` de `_app.tsx`. O caminho inverso também é guardado: `/login` com
+sessão ativa redireciona para o início, no `beforeLoad` de `login.tsx`.
 
 ## Regras de negócio
 

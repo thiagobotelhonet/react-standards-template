@@ -7,7 +7,7 @@ duas seguem caminhos diferentes.
 
 ## Rodar
 
-Requisitos: Node 24 e pnpm 10.33.0.
+Requisitos: Node 24.15 ou mais novo da linha 24, e pnpm 10.33.0.
 
 ```bash
 pnpm install --frozen-lockfile

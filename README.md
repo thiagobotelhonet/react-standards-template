@@ -6,7 +6,7 @@ Base reutilizável para sistemas internos com React e API separada. Inclui uma j
 
 ## Rodar a demonstração
 
-Requisitos: Node 24 e pnpm 10.33.0.
+Requisitos: Node 24.15 ou mais novo da linha 24, e pnpm 10.33.0.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -48,8 +48,10 @@ com o primeiro commit. Não publica nada nem cria repositório remoto.
 | `--no-git` | não inicia o git nem commita |
 
 O que fica para trás: histórico do git do template, `node_modules`, builds e
-`.env` pessoal. O que vai junto: `CLAUDE.md`, `docs/`, `.claude/` e `.mcp.json`
-— o projeto novo nasce com as regras e a revisão.
+`.env` pessoal. O que vai junto: `CLAUDE.md`, `docs/`, `.claude/`, `.mcp.json`,
+`biome.json` e `biome-plugins/` — o projeto novo nasce com as regras e a
+revisão. O commit do template fica anotado em `.template-origin.json`, para
+trazer depois as regras que mudarem ([como](docs/development.md#evoluir-o-template)).
 
 Dentro da pasta do template o comando também responde por
 `pnpm create-project`. E o repositório pode servir como GitHub Template
@@ -101,6 +103,8 @@ pnpm verify
 pnpm exec playwright install chromium
 pnpm test:e2e
 ```
+
+Se o download do Chromium falhar com `self-signed certificate in certificate chain`, a rede inspeciona HTTPS com um certificado que o Windows ou o macOS conhecem e o Node não. Faça o Node usar os certificados do sistema, sem desligar a verificação: `NODE_OPTIONS=--use-system-ca pnpm exec playwright install chromium`.
 
 `verify` executa Biome, TypeScript, testes, verificação do gerador e build. O build verifica também a exclusão dos mocks. Os testes MSW atravessam os serviços HTTP e as regras simuladas; Playwright verifica a jornada no navegador. O CI executa os dois grupos, pula os jobs de código quando a mudança é só de texto e gera um projeto do zero para conferir o gerador; o que cada workflow cobra está em [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 

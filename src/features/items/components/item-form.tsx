@@ -11,12 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select"
+import { Skeleton } from "@/shared/components/ui/skeleton"
 import { Textarea } from "@/shared/components/ui/textarea"
 import { type ItemInput, itemInputSchema } from "../types/items.schemas"
 
 const STATUS_OPTIONS = [
   { label: "Ativo", value: "active" },
   { label: "Arquivado", value: "archived" },
+]
+const SKELETON_FIELDS = [
+  { id: "name", height: "h-9.5" },
+  { id: "description", height: "h-16" },
+  { id: "status", height: "h-9.5" },
 ]
 
 export function ItemForm({
@@ -143,5 +149,26 @@ export function ItemForm({
         </Button>
       </div>
     </form>
+  )
+}
+
+export function ItemFormSkeleton() {
+  return (
+    <div
+      aria-busy="true"
+      className="space-y-6 rounded-2xl border bg-card p-6 shadow-sm"
+    >
+      <span className="sr-only">Carregando…</span>
+      {SKELETON_FIELDS.map(({ id, height }) => (
+        <div key={id} className="flex flex-col gap-2">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className={`${height} w-full rounded-lg`} />
+        </div>
+      ))}
+      <div className="flex justify-end gap-3">
+        <Skeleton className="h-9.5 w-24 rounded-lg" />
+        <Skeleton className="h-9.5 w-28 rounded-lg" />
+      </div>
+    </div>
   )
 }

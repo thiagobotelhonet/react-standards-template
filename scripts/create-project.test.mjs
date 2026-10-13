@@ -51,6 +51,18 @@ test("gera uma cópia independente, personaliza identidade e preserva destinos e
         await readFile(join(destination, rules), "utf8"),
         await readFile(new URL(`../${rules}`, import.meta.url), "utf8")
       )
+    const origin = JSON.parse(
+      await readFile(join(destination, ".template-origin.json"), "utf8")
+    )
+    const { stdout: templateHead } = await run("git", ["rev-parse", "HEAD"], {
+      cwd: fileURLToPath(new URL("..", import.meta.url)),
+    })
+    const templatePkg = JSON.parse(
+      await readFile(new URL("../package.json", import.meta.url), "utf8")
+    )
+    assert.equal(origin.template, templatePkg.name)
+    assert.equal(origin.commit, templateHead.trim())
+    assert.equal(typeof origin.localChanges, "boolean")
     const entries = await readdir(destination)
     for (const excluded of [
       ".git",

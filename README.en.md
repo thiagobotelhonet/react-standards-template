@@ -32,8 +32,10 @@ the standards, and returns a report ordered by severity. It reports and changes 
 
 `criar-app ~/dev/my-system --title "My System"` copies the template, rewrites the package name,
 HTML title, application name and storage namespace, installs dependencies and makes the first commit.
-`CLAUDE.md`, `docs/`, `.claude/` and `.mcp.json` come along, so the new project starts with the rules
-and the review already in place. It publishes nothing and creates no remote.
+`CLAUDE.md`, `docs/`, `.claude/`, `.mcp.json`, `biome.json` and `biome-plugins/` come along, so the
+new project starts with the rules and the review already in place, and `.template-origin.json` records
+the template commit it came from, so later rule changes can be brought over. It publishes nothing and
+creates no remote.
 
 ### Browser demo with no backend
 
@@ -63,7 +65,7 @@ generates a project from scratch to check the generator. What each workflow cove
 ## Stack
 
 React 19, TypeScript, Vite, TanStack Router, Query, Form and Table, Tailwind 4, Base UI through the
-shadcn preset, Zod, ky, Biome, Vitest with MSW, Playwright. Node 24 and pnpm 10.33.0.
+shadcn preset, Zod, ky, Biome, Vitest with MSW, Playwright. Node 24.15 or newer on the 24 line, and pnpm 10.33.0.
 
 ## Quick start
 

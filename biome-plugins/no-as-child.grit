@@ -1,6 +1,6 @@
 language js
 
 `asChild` as $attribute where {
-  $attribute <: within JsxAttribute() ,
+  $attribute <: within JsxAttribute(),
   register_diagnostic(span=$attribute, message="CMP-03 — Composição por render, nunca asChild: o Base UI usa a propriedade render.")
 }

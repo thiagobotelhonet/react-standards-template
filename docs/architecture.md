@@ -73,7 +73,7 @@ flowchart LR
 
 ## Fronteiras e manutenção
 
-O Biome bloqueia imports por alias para o interior de outro domínio. Os plugins GritQL em `biome-plugins/` barram, no `pnpm check`, as regras que dá para detectar sem ambiguidade: elemento nativo com primitiva, `asChild`, cor pronta, medida entre colchetes, caminho da API com barra e loader que espera. Imports relativos atravessando módulos precisam ser evitados na revisão; a regra não substitui análise de dependências. `shared` recebe dados e ações da rota, sem conhecer `features`.
+O Biome bloqueia imports para o interior de outro domínio, por alias ou por caminho relativo que sai do módulo, e qualquer import de `features` dentro de `shared`. Os plugins GritQL em `biome-plugins/` barram, no `pnpm check`, as regras que dá para detectar sem ambiguidade: limite do módulo, elemento nativo com primitiva, `asChild`, `<Toaster>` fora da raiz, cor pronta, medida entre colchetes, caminho da API com barra e loader que espera. O limite relativo conta a profundidade prevista acima (raiz do módulo e uma pasta abaixo); pasta mais funda dentro do módulo pede ajuste em `biome.json`. `shared` recebe dados e ações da rota, sem conhecer `features`.
 
 Nome, cores e menu são pontos de configuração concretos. Não há um motor genérico de CRUD, contêiner de injeção, sistema de plugins, monorepo ou biblioteca de componentes publicada. Essas opções acrescentariam manutenção sem requisitos atuais.
 

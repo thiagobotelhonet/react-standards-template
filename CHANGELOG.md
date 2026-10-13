@@ -2,6 +2,39 @@
 
 ## Não lançado
 
+- Dependências em dia, cada atualização testada no seu commit: versões menores
+  e de correção de produção e desenvolvimento, TypeScript 7.0.2, Vitest 5.0.3,
+  jsdom 30.1.2 e MSW 3.0.3. Ação do CodeQL na 4.38.2.
+- Node mínimo sobe para 24.15 (`engines`), exigência do jsdom 30.
+- MSW 3: `onUnhandledRequest` virou `onUnhandledFrame` em `src/main.tsx`,
+  `src/mocks/browser.ts` e nos testes. Quem copiou o template e atualizar o
+  MSW precisa da mesma troca.
+- `pnpm-workspace.yaml` libera o MSW 3 para o `@vitest/mocker` 5.0.3, que só o
+  declara como opcional; remover quando o Vitest chegar à 5.0.4.
+- Dependabot ignora versão maior de `@types/node`, que acompanha o Node do
+  projeto.
+- README: como instalar o Chromium do Playwright em rede que inspeciona HTTPS.
+- `criar-app` grava `.template-origin.json` com o commit do template de que a
+  cópia nasceu (decisão 0010). `development.md`, "Evoluir o template", mostra
+  como trazer as regras que mudaram desde então.
+- `pnpm check` passa a barrar também NOM-03 (caminho relativo que sai do
+  módulo), CMP-04 (`src/shared` importando `src/features`) e CMP-09
+  (`<Toaster>` fora de `__root.tsx`). Arquivos de teste podem importar
+  `@/mocks`; o teste de itens deixou os caminhos relativos que contornavam as
+  regras, e `@/features/auth` passou a exportar `fetchSession`, `login` e
+  `logout`.
+- Início e edição de item mostram esqueleto enquanto carregam (CMP-07), e o
+  início pré-carrega os itens no loader (ROT-08). Novo `ItemFormSkeleton`.
+- `AppTable`: alinhada ao título da página (saiu o recuo lateral próprio),
+  cabeçalho ordenável anuncia a ordem com `aria-sort`, e a opção `align` de
+  `AppTableSortableHeader`, sem uso, saiu.
+- Removidos de `src/styles.css` os tokens sem uso `brand*`,
+  `--container-content` e `--transition-property-width`.
+- Dependabot agrupa por família (TanStack, Tailwind, React) acima da divisão
+  entre produção e desenvolvimento, para não repetir o descompasso entre
+  `@tanstack/react-router` e `@tanstack/router-plugin`.
+- O workflow do gerador roda também quando mudam `biome.json` e
+  `biome-plugins/`.
 - `pnpm check` passa a barrar NOM-02, COD-05, CMP-02, CMP-03, COR-01, COR-03,
   API-01 e ROT-08: regras do Biome e plugins GritQL em `biome-plugins/`,
   copiados para os projetos gerados. CMP-02, CMP-03, COR-01 e API-01 saíram da

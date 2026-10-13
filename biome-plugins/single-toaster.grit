@@ -1,0 +1,7 @@
+language js
+
+JsImport() as $import where {
+  $import <: contains `"sonner"`,
+  $import <: contains `Toaster`,
+  register_diagnostic(span=$import, message="CMP-09 — Avisos usam o sonner, com um <Toaster> só: ele mora em src/routes/__root.tsx; aqui, use toast.success(...) ou toast.error(...).")
+}

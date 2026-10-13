@@ -81,6 +81,47 @@ describe("busca da AppTable", () => {
   })
 })
 
+describe("ordenação da AppTable", () => {
+  type Person = { id: string; name: string; role: string }
+  const personColumn = createAppColumnHelper<Person>()
+  const personColumns = personColumn.columns([
+    personColumn.accessor("name", { header: "Nome" }),
+    personColumn.accessor("role", { header: "Cargo", enableSorting: false }),
+  ])
+
+  function SortedTable({ desc }: { desc?: boolean }) {
+    const table = useAppTable({
+      data: [],
+      columns: personColumns,
+      state: {
+        sorting: desc === undefined ? [] : [{ id: "name", desc }],
+      },
+    })
+    return (
+      <AppTable
+        table={table}
+        columnLabels={{ name: "Nome", role: "Cargo" }}
+        emptyMessage="Nada encontrado."
+      />
+    )
+  }
+
+  it("anuncia a ordem da coluna ordenada para leitor de tela", () => {
+    const { rerender } = render(<SortedTable />)
+    const name = () => screen.getByRole("columnheader", { name: "Nome" })
+    const role = () => screen.getByRole("columnheader", { name: "Cargo" })
+
+    expect(name()).toHaveAttribute("aria-sort", "none")
+    expect(role()).not.toHaveAttribute("aria-sort")
+
+    rerender(<SortedTable desc={false} />)
+    expect(name()).toHaveAttribute("aria-sort", "ascending")
+
+    rerender(<SortedTable desc />)
+    expect(name()).toHaveAttribute("aria-sort", "descending")
+  })
+})
+
 describe("bindAppTableToUrl", () => {
   const params = { q: "", pagina: 3, porPagina: 20, ordenarPor: "name" }
 

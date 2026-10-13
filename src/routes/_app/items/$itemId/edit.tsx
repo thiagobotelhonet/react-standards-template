@@ -3,12 +3,14 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 import {
   ItemForm,
+  ItemFormSkeleton,
   itemQueryOptions,
   useDeleteItem,
   useSaveItem,
 } from "@/features/items"
 import { RequestError } from "@/shared/components/request-error"
 import { Button } from "@/shared/components/ui/button"
+import { Skeleton } from "@/shared/components/ui/skeleton"
 
 export const Route = createFileRoute("/_app/items/$itemId/edit")({
   loader: ({ context, params }) => {
@@ -34,7 +36,16 @@ function EditItem() {
           Atualize as informações do registro.
         </p>
       </div>
-      {item.isPending && <p role="status">Carregando item…</p>}
+      {item.isPending && (
+        <>
+          <ItemFormSkeleton />
+          <div aria-hidden="true" className="rounded-2xl border p-6">
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="mt-3 mb-5 h-4 w-80 max-w-full" />
+            <Skeleton className="h-9.5 w-28 rounded-lg" />
+          </div>
+        </>
+      )}
       {item.error && (
         <RequestError error={item.error} onRetry={() => void item.refetch()} />
       )}
