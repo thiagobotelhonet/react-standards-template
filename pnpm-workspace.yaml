@@ -26,3 +26,18 @@ allowBuilds:
   lightningcss: true
   unrs-resolver: true
   msw: false
+
+# Força versões corrigidas de dependências transitivas que o `pnpm audit` acusa
+# como high. Remova cada linha quando a dependência direta que a puxa
+# (@tailwindcss/vite e shadcn) passar a exigir a versão corrigida sozinha.
+overrides:
+  source-map-js: "^1.2.2"
+  "@modelcontextprotocol/sdk": "^1.31.0"
+
+# O braces (via shadcn > fast-glob > micromatch) ainda não tem versão
+# corrigida. Ele só roda dentro do CLI do shadcn, que não recebe padrões
+# de glob vindos de usuário, então a negação de serviço não é alcançável aqui.
+# Remova quando sair um braces corrigido.
+auditConfig:
+  ignoreGhsas:
+    - GHSA-vfj7-8cjw-p6xm
